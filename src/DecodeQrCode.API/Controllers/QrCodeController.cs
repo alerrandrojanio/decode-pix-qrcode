@@ -1,4 +1,5 @@
-﻿using DecodeQrCode.Domain.Interfaces;
+﻿using DecodeQrCode.API.Models.Decode;
+using DecodeQrCode.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DecodeQrCode.API.Controllers;
@@ -16,7 +17,7 @@ public class QrCodeController : ControllerBase
     }
 
     [HttpPost("decode")]
-    public IActionResult Decode()
+    public IActionResult Decode(DecodeQrCodeModel decodeQrCodeModel)
     {
         return Ok("Hello World");
     }

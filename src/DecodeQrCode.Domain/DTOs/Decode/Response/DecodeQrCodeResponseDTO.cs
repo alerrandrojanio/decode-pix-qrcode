@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DecodeQrCode.Domain.Enum;
 
-namespace DecodeQrCode.Domain.DTOs.Decode.Response
+namespace DecodeQrCode.Domain.DTOs.Decode.Response;
+
+public class DecodeQrCodeResponseDTO
 {
-    class DecodeQrCodeResponseDTO
-    {
-    }
+    public QrCodeType Type { get; set; }
+
+    public StaticQrCodeResponseDTO? StaticQrCode { get; set; }
+
+    public ImmediateQrCodeResponseDTO? ImmediateQrCode { get; set; }
+
+    public DueDateQrCodeResponseDTO? DueDateQrCode { get; set; }
 }

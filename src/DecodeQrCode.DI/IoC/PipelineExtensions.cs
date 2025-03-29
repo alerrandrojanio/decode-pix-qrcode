@@ -10,6 +10,7 @@ public static class PipelineExtensions
     public static void AddServices(this IServiceCollection services)
     {
         services.AddScoped<IDecodeQrCodeService, DecodeQrCodeService>();
+        services.AddScoped<IDecodeService, DecodeService>();
 
         services.AddScoped<IDecodeQrCodeIntegrationService, DecodeQrCodeIntegrationService>();
     }
