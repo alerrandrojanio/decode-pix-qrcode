@@ -2,4 +2,5 @@
 
 public interface IDecodeQrCodeIntegrationService
 {
+    void DecodeQrCode();
 }

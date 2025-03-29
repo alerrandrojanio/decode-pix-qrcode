@@ -1,20 +1,32 @@
 ﻿using DecodeQrCode.Domain.DTOs.Decode;
+using DecodeQrCode.Domain.DTOs.QrCode;
+using DecodeQrCode.Domain.Enum;
 using DecodeQrCode.Domain.Interfaces;
-using DecodeQrCode.Infrastructure.Integration.Services;
 
 namespace DecodeQrCode.Application.Services;
 
 public class DecodeQrCodeService : IDecodeQrCodeService
 {
-    private readonly DecodeQrCodeIntegrationService _decodeQrCodeIntegrationService;
+    private readonly IDecodeService _decodeService;
+    private readonly IDecodeQrCodeIntegrationService _decodeQrCodeIntegrationService;
 
-    public DecodeQrCodeService(DecodeQrCodeIntegrationService decodeQrCodeIntegrationService)
+    public DecodeQrCodeService(IDecodeService decodeService, IDecodeQrCodeIntegrationService decodeQrCodeIntegrationService)
     {
+        _decodeService = decodeService;
         _decodeQrCodeIntegrationService = decodeQrCodeIntegrationService;
     }
 
     public void DecodeQrCode(DecodeQrCodeDTO decodeQrCodeDTO)
     {
-        throw new System.NotImplementedException();
+        QrCodeDTO qrCodeDTO =  _decodeService.DecodeQrCode(decodeQrCodeDTO.QrCode);
+
+        if (string.IsNullOrEmpty(qrCodeDTO.MerchantAccountInformation!.URL))
+        {
+            qrCodeDTO.Type = QrCodeType.STATIC;
+        }
+        else
+        {
+
+        }
     }
 }

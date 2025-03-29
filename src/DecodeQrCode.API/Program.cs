@@ -1,3 +1,4 @@
+using DecodeQrCode.API.Mapping;
 using DecodeQrCode.DI.IoC;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,6 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddServices();
+
+builder.Services.ConfigureSettings(builder.Configuration);
+
+MappingConfiguration.RegisterMappings();
 
 builder.Services.AddControllers();
 

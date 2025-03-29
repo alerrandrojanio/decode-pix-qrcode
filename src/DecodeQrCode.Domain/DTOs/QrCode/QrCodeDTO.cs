@@ -1,7 +1,11 @@
-﻿namespace DecodeQrCode.Domain.DTOs.QrCode;
+﻿using DecodeQrCode.Domain.Enum;
+
+namespace DecodeQrCode.Domain.DTOs.QrCode;
 
 public class QrCodeDTO
 {
+    public QrCodeType? Type { get; set; }
+
     public string PayloadFormatIndicator { get; set; } = string.Empty;
 
     public MerchantAccountInformationDTO? MerchantAccountInformation { get; set; }
