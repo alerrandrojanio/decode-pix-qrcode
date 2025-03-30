@@ -11,6 +11,7 @@ public class DecodeService : IDecodeService
         Dictionary<string, QrCodeField> QrCodeFields = new()
         {
             { "00", QrCodeField.PAYLOAD_FORMAT_INDICATOR },
+            { "01", QrCodeField.POINT_OF_INITIATION_METHOD },
             { "26", QrCodeField.MERCHANT_ACCOUNT_INFORMATION },
             { "52", QrCodeField.MERCHANT_CATEGORY_CODE },
             { "53", QrCodeField.TRANSACTION_CURRENCY },
@@ -37,6 +38,10 @@ public class DecodeService : IDecodeService
                 {
                     case QrCodeField.PAYLOAD_FORMAT_INDICATOR:
                         qrCodeDTO.PayloadFormatIndicator = value;
+                        break;
+
+                    case QrCodeField.POINT_OF_INITIATION_METHOD:
+                        qrCodeDTO.PointOfInitiationMethod = value;
                         break;
 
                     case QrCodeField.MERCHANT_ACCOUNT_INFORMATION:

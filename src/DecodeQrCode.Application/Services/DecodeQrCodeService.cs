@@ -26,7 +26,7 @@ public class DecodeQrCodeService : IDecodeQrCodeService
         }
         else
         {
-
+            _decodeQrCodeIntegrationService.DecodeQrCode(qrCodeDTO);
         }
     }
 }

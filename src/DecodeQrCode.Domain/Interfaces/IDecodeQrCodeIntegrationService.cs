@@ -1,6 +1,8 @@
-﻿namespace DecodeQrCode.Domain.Interfaces;
+﻿using DecodeQrCode.Domain.DTOs.QrCode;
+
+namespace DecodeQrCode.Domain.Interfaces;
 
 public interface IDecodeQrCodeIntegrationService
 {
-    void DecodeQrCode();
+    void DecodeQrCode(QrCodeDTO qrCodeDTO);
 }

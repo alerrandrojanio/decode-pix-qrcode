@@ -8,6 +8,8 @@ public class QrCodeDTO
 
     public string PayloadFormatIndicator { get; set; } = string.Empty;
 
+    public string PointOfInitiationMethod { get; set; } = string.Empty;
+
     public MerchantAccountInformationDTO? MerchantAccountInformation { get; set; }
 
     public string MerchantCategoryCode { get; set; } = string.Empty;

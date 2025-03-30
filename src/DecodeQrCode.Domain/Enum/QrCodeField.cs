@@ -16,5 +16,6 @@ public enum QrCodeField
     URL,
     TXID,
     ADDITIONAL_INFORMATION,
-    FSS
+    FSS,
+    POINT_OF_INITIATION_METHOD
 }
