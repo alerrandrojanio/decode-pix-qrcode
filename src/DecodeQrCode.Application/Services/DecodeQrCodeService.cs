@@ -10,6 +10,7 @@ public class DecodeQrCodeService : IDecodeQrCodeService
     private readonly IDecodeService _decodeService;
     private readonly IDecodeQrCodeIntegrationService _decodeQrCodeIntegrationService;
     private readonly IDecodeQrCodeValidator _decodeQrCodeValidator;
+    
 
     public DecodeQrCodeService(IDecodeService decodeService, IDecodeQrCodeIntegrationService decodeQrCodeIntegrationService, IDecodeQrCodeValidator decodeQrCodeValidator)
     {
@@ -18,11 +19,11 @@ public class DecodeQrCodeService : IDecodeQrCodeService
         _decodeQrCodeValidator = decodeQrCodeValidator;
     }
 
-    public void DecodeQrCode(DecodeQrCodeDTO decodeQrCodeDTO)
+    public async Task DecodeQrCode(DecodeQrCodeDTO decodeQrCodeDTO)
     {
         QrCodeDTO qrCodeDTO =  _decodeService.DecodeQrCode(decodeQrCodeDTO.QrCode);
 
-        _decodeQrCodeValidator.Validate(qrCodeDTO);
+        await _decodeQrCodeValidator.Validate(qrCodeDTO);
 
         if (string.IsNullOrEmpty(qrCodeDTO.MerchantAccountInformation!.URL))
         {
@@ -30,7 +31,7 @@ public class DecodeQrCodeService : IDecodeQrCodeService
         }
         else
         {
-            _decodeQrCodeIntegrationService.DecodeQrCode(qrCodeDTO);
+            await _decodeQrCodeIntegrationService.DecodeQrCode(qrCodeDTO);
         }
     }
 }

@@ -4,5 +4,5 @@ namespace DecodeQrCode.Domain.Interfaces;
 
 public interface IDecodeQrCodeIntegrationService
 {
-    void DecodeQrCode(QrCodeDTO qrCodeDTO);
+    Task DecodeQrCode(QrCodeDTO qrCodeDTO);
 }

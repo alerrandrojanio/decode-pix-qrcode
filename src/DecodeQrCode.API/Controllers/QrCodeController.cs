@@ -19,11 +19,11 @@ public class QrCodeController : ControllerBase
     }
 
     [HttpPost("decode")]
-    public IActionResult DecodeQrCode(DecodeQrCodeModel decodeQrCodeModel)
+    public async Task<IActionResult> DecodeQrCode(DecodeQrCodeModel decodeQrCodeModel)
     {
         DecodeQrCodeDTO decodeQrCodeDTO = decodeQrCodeModel.Adapt<DecodeQrCodeDTO>();
 
-        _decodeQrCodeService.DecodeQrCode(decodeQrCodeDTO);
+        await _decodeQrCodeService.DecodeQrCode(decodeQrCodeDTO);
 
         return Ok("Hello World");
     }

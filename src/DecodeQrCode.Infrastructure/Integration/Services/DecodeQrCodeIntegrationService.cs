@@ -1,10 +1,13 @@
 ﻿using DecodeQrCode.Domain.DTOs.HttpClient;
 using DecodeQrCode.Domain.DTOs.HttpClient.Response;
+using DecodeQrCode.Domain.DTOs.JWS;
 using DecodeQrCode.Domain.DTOs.QrCode;
 using DecodeQrCode.Domain.Enum;
+using DecodeQrCode.Domain.Exceptions;
 using DecodeQrCode.Domain.Interfaces;
 using DecodeQrCode.Infrastructure.Extensions;
 using System.Net;
+using System.Text.Json;
 
 namespace DecodeQrCode.Infrastructure.Integration.Services;
 
@@ -17,7 +20,7 @@ public class DecodeQrCodeIntegrationService : IDecodeQrCodeIntegrationService
         _httpClientService = httpClientService;
     }
 
-    public async void DecodeQrCode(QrCodeDTO qrCodeDTO)
+    public async Task DecodeQrCode(QrCodeDTO qrCodeDTO)
     {
         ClientGetRequestDTO clientGetRequestDTO = new()
         {
@@ -37,8 +40,15 @@ public class DecodeQrCodeIntegrationService : IDecodeQrCodeIntegrationService
         if (httpClientResponseDTO.StatusCode != HttpStatusCode.OK)
         {
             // Salvar erro mongo
-            throw new Exception();
+
+            if (httpClientResponseDTO.Error is not null)
+                throw new ServiceException(httpClientResponseDTO.Error.Title ?? httpClientResponseDTO.Error.Message, httpClientResponseDTO.StatusCode);
         }
 
+        string stringJWS = httpClientResponseDTO.Content!;
+
+        JWS? jws = JWSExtensions.ParseJWS(stringJWS);
+
+        
     }
 }

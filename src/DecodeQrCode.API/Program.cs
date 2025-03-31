@@ -1,4 +1,5 @@
 using DecodeQrCode.API.Mapping;
+using DecodeQrCode.API.Middlewares;
 using DecodeQrCode.DI.IoC;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,9 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddServices();
+builder.Services.AddApplicationServices();
+
+builder.Services.AddIntegrationServices();
 
 builder.Services.ConfigureSettings(builder.Configuration);
+
+builder.Services.AddRedisConnection(builder.Configuration);
 
 MappingConfiguration.RegisterMappings();
 
@@ -39,5 +44,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware<GlobalErrorHandlerMiddleware>();
 
 app.Run();

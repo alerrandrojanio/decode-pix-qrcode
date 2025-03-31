@@ -6,5 +6,5 @@ public class QrCodeSettings
 
     public string HomologationPrefix { get; set; } = string.Empty;
 
-    public int UriMinumumBitLength { get; set; }
+    public int UrlMinumumBitSize { get; set; }
 }
