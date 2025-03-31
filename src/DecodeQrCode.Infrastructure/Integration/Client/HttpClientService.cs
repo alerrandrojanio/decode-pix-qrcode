@@ -4,6 +4,7 @@ using DecodeQrCode.Domain.DTOs.HttpClient.Response;
 using DecodeQrCode.Domain.Enum;
 using DecodeQrCode.Domain.Interfaces;
 using DecodeQrCode.Infrastructure.Extensions;
+using System.Net;
 using System.Text.Json;
 
 namespace DecodeQrCode.Infrastructure.Integration.Client;
@@ -58,5 +59,7 @@ public class HttpClientService : IHttpClientService
     {
         _httpClient.DefaultRequestHeaders.Clear();
         _httpClient.DefaultRequestHeaders.Add("Accept", requestType.GetDescription());
+
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DecodeQrCode.Application.Services;
+using DecodeQrCode.Application.Validators;
 using DecodeQrCode.Domain.Interfaces;
 using DecodeQrCode.Infrastructure.Configuration;
 using DecodeQrCode.Infrastructure.Integration.Client;
@@ -15,6 +16,7 @@ public static class PipelineExtensions
         services.AddScoped<IDecodeQrCodeService, DecodeQrCodeService>();
         services.AddScoped<IDecodeService, DecodeService>();
         services.AddScoped<IDecodeQrCodeIntegrationService, DecodeQrCodeIntegrationService>();
+        services.AddScoped<IDecodeQrCodeValidator, DecodeQrCodeValidator>();
         services.AddScoped<IHttpClientService, HttpClientService>();
 
         services.AddHttpClient<HttpClientService>();
