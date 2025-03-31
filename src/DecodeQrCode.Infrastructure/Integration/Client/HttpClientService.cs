@@ -1,9 +1,8 @@
-﻿using DecodeQrCode.Domain.DTOs.Client.Response;
-using DecodeQrCode.Domain.DTOs.HttpClient;
-using DecodeQrCode.Domain.DTOs.HttpClient.Response;
-using DecodeQrCode.Domain.Enum;
+﻿using DecodeQrCode.Domain.DTOs.Client;
+using DecodeQrCode.Domain.DTOs.Client.Response;
+using DecodeQrCode.Domain.Enums;
+using DecodeQrCode.Domain.Extensions;
 using DecodeQrCode.Domain.Interfaces;
-using DecodeQrCode.Infrastructure.Extensions;
 using System.Net;
 using System.Text.Json;
 

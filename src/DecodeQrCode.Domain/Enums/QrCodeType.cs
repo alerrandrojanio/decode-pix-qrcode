@@ -1,4 +1,4 @@
-﻿namespace DecodeQrCode.Domain.Enum;
+﻿namespace DecodeQrCode.Domain.Enums;
 
 public enum QrCodeType
 {

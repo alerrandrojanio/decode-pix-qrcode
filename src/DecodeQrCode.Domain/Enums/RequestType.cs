@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace DecodeQrCode.Domain.Enum;
+namespace DecodeQrCode.Domain.Enums;
 
 public enum RequestType
 {

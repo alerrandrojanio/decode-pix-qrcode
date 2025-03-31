@@ -2,13 +2,13 @@
 
 namespace DecodeQrCode.Domain.DTOs.JWS.Objects;
 
-public class JWSChange
+public class JWSWithdrawalDTO
 {
     [JsonPropertyName("valor")]
     public string? Value { get; set; }
 
-    [JsonPropertyName("modalidadeAlteracao")]
-    public int? AlterModality { get; set; }
+    [JsonPropertyName("modalidade")]
+    public int? Modality { get; set; }
 
     [JsonPropertyName("prestadorDoServicoDeSaque")]
     public string? WithdrawalServiceProvider { get; set; }

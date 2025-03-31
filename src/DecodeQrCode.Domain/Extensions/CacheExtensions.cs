@@ -1,8 +1,8 @@
-﻿namespace DecodeQrCode.Infrastructure.Extensions;
+﻿namespace DecodeQrCode.Domain.Extensions;
 
 public static class CacheExtensions
 {
-    public static string GenerateCacheKey<T>(string type, string value)
+    public static string GenerateKey<T>(string type, string value)
     {
         string entityType = typeof(T).Name;
 

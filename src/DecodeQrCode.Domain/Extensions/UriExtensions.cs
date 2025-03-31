@@ -1,4 +1,4 @@
-﻿namespace DecodeQrCode.Infrastructure.Extensions;
+﻿namespace DecodeQrCode.Domain.Extensions;
 
 public static class UriExtensions
 {

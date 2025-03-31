@@ -1,7 +1,7 @@
 ﻿using DecodeQrCode.Domain.DTOs.Certificate;
+using DecodeQrCode.Domain.Extensions;
 using DecodeQrCode.Domain.Interfaces;
 using DecodeQrCode.Infrastructure.Configuration;
-using DecodeQrCode.Infrastructure.Extensions;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 using System.Net.Security;
@@ -26,7 +26,7 @@ public class CertificateIntegrationService : ICertificateIntegrationService
     {
         Uri uri = new(url.AddSecurityPrefix());
 
-        string cacheKey = CacheExtensions.GenerateCacheKey<ServerCertificateDTO>(nameof(uri), uri.Host);
+        string cacheKey = CacheExtensions.GenerateKey<ServerCertificateDTO>(nameof(uri), uri.Host);
 
         IDatabase cacheDatabase = _redisConnection.GetDatabase();
 

@@ -2,7 +2,7 @@
 
 namespace DecodeQrCode.Domain.DTOs.JWS.Objects;
 
-public class JWSRecipient
+public class JWSRecipientDTO
 {
     [JsonPropertyName("cpf")]
     public string? CPF { get; set; }

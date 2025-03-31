@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 
-namespace DecodeQrCode.Infrastructure.Extensions;
+namespace DecodeQrCode.Domain.Extensions;
 
 public static class EnumExtensions
 {

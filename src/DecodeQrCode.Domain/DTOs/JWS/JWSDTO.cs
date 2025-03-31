@@ -1,10 +1,10 @@
 ﻿namespace DecodeQrCode.Domain.DTOs.JWS;
 
-public class JWS
+public class JWSDTO
 {
-    public JWSHeader? Header { get; set; }
+    public JWSHeaderDTO? Header { get; set; }
 
-    public JWSPayload? Payload { get; set; }
+    public JWSPayloadDTO? Payload { get; set; }
 
     public string? SerializedHeader { get; set; }
 

@@ -2,11 +2,11 @@
 
 namespace DecodeQrCode.Domain.DTOs.JWS.Objects;
 
-public class JWSRemoval
+public class JWSRemovalDTO
 {
     [JsonPropertyName("saque")]
-    public JWSWithdrawal? Withdrawal { get; set; }
+    public JWSWithdrawalDTO? Withdrawal { get; set; }
 
     [JsonPropertyName("troco")]
-    public JWSChange? Change { get; set; }
+    public JWSChangeDTO? Change { get; set; }
 }

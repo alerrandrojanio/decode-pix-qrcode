@@ -1,5 +1,5 @@
 ﻿using DecodeQrCode.Domain.DTOs.QrCode;
-using DecodeQrCode.Domain.Enum;
+using DecodeQrCode.Domain.Enums;
 using DecodeQrCode.Domain.Interfaces;
 
 namespace DecodeQrCode.Application.Services;

@@ -2,7 +2,7 @@
 
 namespace DecodeQrCode.Domain.DTOs.JWS;
 
-public class JWSHeader
+public class JWSHeaderDTO
 {
     [JsonPropertyName("alg")]
     public string? Algorithm { get; set; }

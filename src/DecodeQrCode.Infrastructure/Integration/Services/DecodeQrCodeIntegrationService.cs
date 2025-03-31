@@ -1,13 +1,12 @@
-﻿using DecodeQrCode.Domain.DTOs.HttpClient;
-using DecodeQrCode.Domain.DTOs.HttpClient.Response;
+﻿using DecodeQrCode.Domain.DTOs.Client;
+using DecodeQrCode.Domain.DTOs.Client.Response;
 using DecodeQrCode.Domain.DTOs.JWS;
 using DecodeQrCode.Domain.DTOs.QrCode;
-using DecodeQrCode.Domain.Enum;
+using DecodeQrCode.Domain.Enums;
 using DecodeQrCode.Domain.Exceptions;
+using DecodeQrCode.Domain.Extensions;
 using DecodeQrCode.Domain.Interfaces;
-using DecodeQrCode.Infrastructure.Extensions;
 using System.Net;
-using System.Text.Json;
 
 namespace DecodeQrCode.Infrastructure.Integration.Services;
 
@@ -20,7 +19,7 @@ public class DecodeQrCodeIntegrationService : IDecodeQrCodeIntegrationService
         _httpClientService = httpClientService;
     }
 
-    public async Task DecodeQrCode(QrCodeDTO qrCodeDTO)
+    public async Task<JWSDTO?> DecodeQrCode(QrCodeDTO qrCodeDTO)
     {
         ClientGetRequestDTO clientGetRequestDTO = new()
         {
@@ -47,8 +46,8 @@ public class DecodeQrCodeIntegrationService : IDecodeQrCodeIntegrationService
 
         string stringJWS = httpClientResponseDTO.Content!;
 
-        JWS? jws = JWSExtensions.ParseJWS(stringJWS);
+        JWSDTO? jws = JWSExtensions.ParseJWS(stringJWS);
 
-        
+        return jws;
     }
 }

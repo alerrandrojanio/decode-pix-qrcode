@@ -1,5 +1,6 @@
 ﻿using DecodeQrCode.API.Models.Decode;
 using DecodeQrCode.Domain.DTOs.Decode;
+using DecodeQrCode.Domain.DTOs.Decode.Response;
 using DecodeQrCode.Domain.Interfaces;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
@@ -23,8 +24,8 @@ public class QrCodeController : ControllerBase
     {
         DecodeQrCodeDTO decodeQrCodeDTO = decodeQrCodeModel.Adapt<DecodeQrCodeDTO>();
 
-        await _decodeQrCodeService.DecodeQrCode(decodeQrCodeDTO);
+        DecodeQrCodeResponseDTO? decodeQrCodeResponseDTO = await _decodeQrCodeService.DecodeQrCode(decodeQrCodeDTO);
 
-        return Ok("Hello World");
+        return Ok(decodeQrCodeResponseDTO);
     }
 }

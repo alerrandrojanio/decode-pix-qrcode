@@ -2,7 +2,7 @@
 
 namespace DecodeQrCode.Domain.DTOs.JWS.Objects;
 
-public class JWSCalendar
+public class JWSCalendarDTO
 {
     [JsonPropertyName("criacao")]
     public string? CreationDate { get; set; }

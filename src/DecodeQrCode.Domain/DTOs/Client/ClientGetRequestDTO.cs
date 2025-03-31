@@ -1,7 +1,7 @@
-﻿using DecodeQrCode.Domain.DTOs.HttpClient.Base;
-using DecodeQrCode.Domain.Enum;
+﻿using DecodeQrCode.Domain.DTOs.Client.Base;
+using DecodeQrCode.Domain.Enums;
 
-namespace DecodeQrCode.Domain.DTOs.HttpClient;
+namespace DecodeQrCode.Domain.DTOs.Client;
 
 public class ClientGetRequestDTO : ClientRequestDTO
 {

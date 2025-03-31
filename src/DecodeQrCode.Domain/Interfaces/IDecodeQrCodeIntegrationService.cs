@@ -1,8 +1,9 @@
-﻿using DecodeQrCode.Domain.DTOs.QrCode;
+﻿using DecodeQrCode.Domain.DTOs.JWS;
+using DecodeQrCode.Domain.DTOs.QrCode;
 
 namespace DecodeQrCode.Domain.Interfaces;
 
 public interface IDecodeQrCodeIntegrationService
 {
-    Task DecodeQrCode(QrCodeDTO qrCodeDTO);
+    Task<JWSDTO?> DecodeQrCode(QrCodeDTO qrCodeDTO);
 }

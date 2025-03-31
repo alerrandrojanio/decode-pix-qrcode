@@ -1,10 +1,10 @@
-﻿using DecodeQrCode.Domain.Enum;
+﻿using DecodeQrCode.Domain.Enums;
 
 namespace DecodeQrCode.Domain.DTOs.Decode.Response;
 
 public class DecodeQrCodeResponseDTO
 {
-    public QrCodeType Type { get; set; }
+    public string? Type { get; set; }
 
     public StaticQrCodeResponseDTO? StaticQrCode { get; set; }
 

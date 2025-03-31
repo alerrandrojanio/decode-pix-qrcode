@@ -2,7 +2,7 @@
 
 namespace DecodeQrCode.Domain.DTOs.JWS.Objects;
 
-public class JWSValue
+public class JWSValueDTO
 {
     [JsonPropertyName("original")]
     public string? OriginalValue { get; set; }
@@ -11,7 +11,7 @@ public class JWSValue
     public int? ModalityChange { get; set; }
 
     [JsonPropertyName("retirada")]
-    public JWSRemoval? Removal { get; set; }
+    public JWSRemovalDTO? Removal { get; set; }
 
     [JsonPropertyName("abatimento")]
     public string? Rebate { get; set; }

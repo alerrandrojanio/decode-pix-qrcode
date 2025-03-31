@@ -1,5 +1,5 @@
-﻿using DecodeQrCode.Domain.DTOs.HttpClient;
-using DecodeQrCode.Domain.DTOs.HttpClient.Response;
+﻿using DecodeQrCode.Domain.DTOs.Client;
+using DecodeQrCode.Domain.DTOs.Client.Response;
 
 namespace DecodeQrCode.Domain.Interfaces;
 

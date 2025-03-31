@@ -1,7 +1,6 @@
-﻿using DecodeQrCode.Domain.DTOs.Client.Response;
-using System.Net;
+﻿using System.Net;
 
-namespace DecodeQrCode.Domain.DTOs.HttpClient.Response;
+namespace DecodeQrCode.Domain.DTOs.Client.Response;
 
 public class ClientResponseDTO
 {

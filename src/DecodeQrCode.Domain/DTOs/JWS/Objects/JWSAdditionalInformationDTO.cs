@@ -2,7 +2,7 @@
 
 namespace DecodeQrCode.Domain.DTOs.JWS.Objects;
 
-public class JWSAdditionalInformation
+public class JWSAdditionalInformationDTO
 {
     [JsonPropertyName("nome")]
     public string? Name { get; set; }

@@ -1,4 +1,4 @@
-﻿namespace DecodeQrCode.Domain.DTOs.HttpClient.Base;
+﻿namespace DecodeQrCode.Domain.DTOs.Client.Base;
 
 public class ClientRequestDTO
 {

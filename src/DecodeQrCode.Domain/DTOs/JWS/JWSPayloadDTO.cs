@@ -3,22 +3,22 @@ using System.Text.Json.Serialization;
 
 namespace DecodeQrCode.Domain.DTOs.JWS;
 
-public class JWSPayload
+public class JWSPayloadDTO
 {
     [JsonPropertyName("revisao")]
     public int? Revision { get; set; }
 
     [JsonPropertyName("calendario")]
-    public JWSCalendar? Calendar { get; set; }
+    public JWSCalendarDTO? Calendar { get; set; }
 
     [JsonPropertyName("devedor")]
-    public JWSDebtor? Debtor { get; set; }
+    public JWSDebtorDTO? Debtor { get; set; }
 
     [JsonPropertyName("recebedor")]
-    public JWSRecipient? Recipient { get; set; }
+    public JWSRecipientDTO? Recipient { get; set; }
 
     [JsonPropertyName("valor")]
-    public JWSValue? Value { get; set; }
+    public JWSValueDTO? Value { get; set; }
 
     [JsonPropertyName("chave")]
     public string? Key { get; set; }
@@ -30,7 +30,7 @@ public class JWSPayload
     public string? PayerRequest { get; set; }
 
     [JsonPropertyName("infoAdicionais")]
-    public List<JWSAdditionalInformation>? AdditionalInformation { get; set; }
+    public List<JWSAdditionalInformationDTO>? AdditionalInformation { get; set; }
 
     [JsonPropertyName("status")]
     public string? Status { get; set; }
