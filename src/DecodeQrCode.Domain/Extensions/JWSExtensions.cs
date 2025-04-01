@@ -29,7 +29,7 @@ public static class JWSExtensions
         string paddedBase64 = base64.PadRight(base64.Length + (4 - base64.Length % 4) % 4, '=')
                                     .Replace('-', '+')
                                     .Replace('_', '/');
-        
+
         return Encoding.UTF8.GetString(Convert.FromBase64String(paddedBase64));
     }
 }

@@ -1,5 +1,6 @@
 ﻿using DecodeQrCode.Domain.DTOs.Decode;
 using DecodeQrCode.Domain.DTOs.Decode.Response;
+using DecodeQrCode.Domain.DTOs.JKU;
 using DecodeQrCode.Domain.DTOs.JWS;
 using DecodeQrCode.Domain.DTOs.QrCode;
 using DecodeQrCode.Domain.Enums;
@@ -13,13 +14,14 @@ public class DecodeQrCodeService : IDecodeQrCodeService
     private readonly IDecodeService _decodeService;
     private readonly IDecodeQrCodeIntegrationService _decodeQrCodeIntegrationService;
     private readonly IDecodeQrCodeValidator _decodeQrCodeValidator;
+    private readonly IJKUValidator _jkuValidator;
 
-
-    public DecodeQrCodeService(IDecodeService decodeService, IDecodeQrCodeIntegrationService decodeQrCodeIntegrationService, IDecodeQrCodeValidator decodeQrCodeValidator)
+    public DecodeQrCodeService(IDecodeService decodeService, IDecodeQrCodeIntegrationService decodeQrCodeIntegrationService, IDecodeQrCodeValidator decodeQrCodeValidator, IJKUValidator jkuValidator)
     {
         _decodeService = decodeService;
         _decodeQrCodeIntegrationService = decodeQrCodeIntegrationService;
         _decodeQrCodeValidator = decodeQrCodeValidator;
+        _jkuValidator = jkuValidator;
     }
 
     public async Task<DecodeQrCodeResponseDTO?> DecodeQrCode(DecodeQrCodeDTO decodeQrCodeDTO)
@@ -30,18 +32,22 @@ public class DecodeQrCodeService : IDecodeQrCodeService
 
         await _decodeQrCodeValidator.Validate(qrCodeDTO);
 
-        JWSDTO? jwsDTO = null;
+        JWSDTO? jws = null;
 
         if (!string.IsNullOrEmpty(qrCodeDTO.MerchantAccountInformation!.URL))
         {
-            jwsDTO = await _decodeQrCodeIntegrationService.DecodeQrCode(qrCodeDTO);
+            jws = await _decodeQrCodeIntegrationService.DecodeQrCode(qrCodeDTO) ?? throw new Exception();
 
-            qrCodeDTO.Type = jwsDTO?.Payload?.Calendar?.DueDate is null ? QrCodeType.IMMEDIATE : QrCodeType.DUEDATE;
+            JKUDTO? jku = await _decodeQrCodeIntegrationService.GetJKU(jws) ?? throw new Exception();
+
+            _jkuValidator.Validate(jku);
+
+            qrCodeDTO.Type = jws?.Payload?.Calendar?.DueDate is null ? QrCodeType.IMMEDIATE : QrCodeType.DUEDATE;
         }
         else
             qrCodeDTO.Type = QrCodeType.STATIC;
 
-        decodeQrCodeResponseDTO = MapperDecodeQrCodeResponseDTO(qrCodeDTO, jwsDTO);
+        decodeQrCodeResponseDTO = MapperDecodeQrCodeResponseDTO(qrCodeDTO, jws);
 
         return decodeQrCodeResponseDTO;
     }

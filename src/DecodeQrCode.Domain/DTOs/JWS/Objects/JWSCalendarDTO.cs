@@ -11,7 +11,7 @@ public class JWSCalendarDTO
     public string? PresentationDate { get; set; }
 
     [JsonPropertyName("expiracao")]
-    public string? Expiration { get; set; }
+    public int? Expiration { get; set; }
 
     [JsonPropertyName("dataDeVencimento")]
     public string? DueDate { get; set; }
