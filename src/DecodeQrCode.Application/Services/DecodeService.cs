@@ -15,6 +15,7 @@ public class DecodeService : IDecodeService
             { "26", QrCodeField.MERCHANT_ACCOUNT_INFORMATION },
             { "52", QrCodeField.MERCHANT_CATEGORY_CODE },
             { "53", QrCodeField.TRANSACTION_CURRENCY },
+            { "54", QrCodeField.TRANSACTION_AMOUNT },
             { "58", QrCodeField.COUNTRY_CODE },
             { "59", QrCodeField.MERCHANT_NAME },
             { "60", QrCodeField.MERCHANT_CITY },
@@ -54,6 +55,10 @@ public class DecodeService : IDecodeService
 
                     case QrCodeField.TRANSACTION_CURRENCY:
                         qrCodeDTO.TransactionCurrency = value;
+                        break;
+
+                    case QrCodeField.TRANSACTION_AMOUNT:
+                        qrCodeDTO.TransactionAmount = value;
                         break;
 
                     case QrCodeField.COUNTRY_CODE:

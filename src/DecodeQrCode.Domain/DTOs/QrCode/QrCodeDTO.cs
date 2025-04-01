@@ -6,23 +6,25 @@ public class QrCodeDTO
 {
     public QrCodeType? Type { get; set; }
 
-    public string PayloadFormatIndicator { get; set; } = string.Empty;
+    public string? PayloadFormatIndicator { get; set; } 
 
-    public string PointOfInitiationMethod { get; set; } = string.Empty;
+    public string? PointOfInitiationMethod { get; set; }
 
     public MerchantAccountInformationDTO? MerchantAccountInformation { get; set; }
 
-    public string MerchantCategoryCode { get; set; } = string.Empty;
+    public string? MerchantCategoryCode { get; set; } 
 
-    public string TransactionCurrency { get; set; } = string.Empty;
+    public string? TransactionCurrency { get; set; }
 
-    public string CountryCode { get; set; } = string.Empty;
+    public string? TransactionAmount { get; set; }
 
-    public string MerchantName { get; set; } = string.Empty;
+    public string? CountryCode { get; set; } 
 
-    public string MerchantCity { get; set; } = string.Empty;
+    public string? MerchantName { get; set; }
+
+    public string? MerchantCity { get; set; }
 
     public AdditionalDataFieldDTO? AdditionalDataField { get; set; }
 
-    public string CRC16 { get; set; } = string.Empty;
+    public string? CRC16 { get; set; }
 }

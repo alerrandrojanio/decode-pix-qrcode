@@ -2,5 +2,5 @@
 
 public class AdditionalDataFieldDTO
 {
-    public string TxId { get; set; } = string.Empty;
+    public string? TxId { get; set; }
 }
