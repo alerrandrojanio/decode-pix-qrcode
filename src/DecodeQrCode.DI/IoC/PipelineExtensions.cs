@@ -19,6 +19,7 @@ public static class PipelineExtensions
         services.AddScoped<IDecodeService, DecodeService>();
         services.AddScoped<IDecodeQrCodeValidator, DecodeQrCodeValidator>();
         services.AddScoped<IJKUValidator, JKUValidator>();
+        services.AddScoped<ISignatureValidator, SignatureValidator>();
     }
 
     public static void AddIntegrationServices(this IServiceCollection services)

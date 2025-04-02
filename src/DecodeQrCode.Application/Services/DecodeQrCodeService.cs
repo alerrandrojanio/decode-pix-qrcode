@@ -4,6 +4,7 @@ using DecodeQrCode.Domain.DTOs.JKU;
 using DecodeQrCode.Domain.DTOs.JWS;
 using DecodeQrCode.Domain.DTOs.QrCode;
 using DecodeQrCode.Domain.Enums;
+using DecodeQrCode.Domain.Exceptions;
 using DecodeQrCode.Domain.Interfaces;
 using Mapster;
 
@@ -15,13 +16,15 @@ public class DecodeQrCodeService : IDecodeQrCodeService
     private readonly IDecodeQrCodeIntegrationService _decodeQrCodeIntegrationService;
     private readonly IDecodeQrCodeValidator _decodeQrCodeValidator;
     private readonly IJKUValidator _jkuValidator;
+    private readonly ISignatureValidator _signatureValidator;
 
-    public DecodeQrCodeService(IDecodeService decodeService, IDecodeQrCodeIntegrationService decodeQrCodeIntegrationService, IDecodeQrCodeValidator decodeQrCodeValidator, IJKUValidator jkuValidator)
+    public DecodeQrCodeService(IDecodeService decodeService, IDecodeQrCodeIntegrationService decodeQrCodeIntegrationService, IDecodeQrCodeValidator decodeQrCodeValidator, IJKUValidator jkuValidator, ISignatureValidator signatureValidator)
     {
         _decodeService = decodeService;
         _decodeQrCodeIntegrationService = decodeQrCodeIntegrationService;
         _decodeQrCodeValidator = decodeQrCodeValidator;
         _jkuValidator = jkuValidator;
+        _signatureValidator = signatureValidator;
     }
 
     public async Task<DecodeQrCodeResponseDTO?> DecodeQrCode(DecodeQrCodeDTO decodeQrCodeDTO)
@@ -41,6 +44,9 @@ public class DecodeQrCodeService : IDecodeQrCodeService
             JKUDTO? jku = await _decodeQrCodeIntegrationService.GetJKU(jws) ?? throw new Exception();
 
             _jkuValidator.Validate(jku);
+
+            if (!_signatureValidator.Validate(jws, jku))
+                throw new ServiceException("Assinatura do QrCode é inválida", System.Net.HttpStatusCode.BadRequest);
 
             qrCodeDTO.Type = jws?.Payload?.Calendar?.DueDate is null ? QrCodeType.IMMEDIATE : QrCodeType.DUEDATE;
         }

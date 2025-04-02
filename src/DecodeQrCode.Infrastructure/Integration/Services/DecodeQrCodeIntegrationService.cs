@@ -25,7 +25,7 @@ public class DecodeQrCodeIntegrationService : IDecodeQrCodeIntegrationService
     {
         ClientGetRequestDTO clientGetRequestDTO = new()
         {
-            Uri = new Uri(qrCodeDTO.MerchantAccountInformation!.URL.AddSecurityPrefix()),
+            Uri = new Uri(qrCodeDTO.MerchantAccountInformation!.URL!.AddSecurityPrefix()),
             RequestType = RequestType.APPLICATION_JSON,
         };
 

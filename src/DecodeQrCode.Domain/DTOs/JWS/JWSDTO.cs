@@ -6,9 +6,5 @@ public class JWSDTO
 
     public JWSPayloadDTO? Payload { get; set; }
 
-    public string? SerializedHeader { get; set; }
-
-    public string? SerializedPayload { get; set; }
-
-    public string? Signature { get; set; }
+    public string? JWS { get; set; }
 }
