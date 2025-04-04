@@ -18,8 +18,8 @@ public static class JWSExtensions
 
         JWSDTO jws = new()
         {
-            Payload = JsonSerializer.Deserialize<JWSPayloadDTO>(header),
-            Header = JsonSerializer.Deserialize<JWSHeaderDTO>(payload),
+            Header = JsonSerializer.Deserialize<JWSHeaderDTO>(header),
+            Payload = JsonSerializer.Deserialize<JWSPayloadDTO>(payload),
             JWS = uncodedJWS
         };
 

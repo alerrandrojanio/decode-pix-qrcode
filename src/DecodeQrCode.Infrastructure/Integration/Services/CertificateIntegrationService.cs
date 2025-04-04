@@ -44,9 +44,11 @@ public class CertificateIntegrationService : ICertificateIntegrationService
 
         await sslStream.AuthenticateAsClientAsync(uri.Host);
 
+        ServerCertificateDTO? serverCertificateDTO = null;
+
         if (sslStream.RemoteCertificate is X509Certificate2 certificate)
         {
-            ServerCertificateDTO serverCertificateDTO = new() 
+            serverCertificateDTO = new() 
             {
                 Issuer = certificate.Issuer,
                 Subject = certificate.Subject,
@@ -57,10 +59,8 @@ public class CertificateIntegrationService : ICertificateIntegrationService
             };
 
             cacheDatabase.StringSet(cacheKey, JsonSerializer.Serialize(serverCertificateDTO), TimeSpan.FromMinutes(_cacheSettings.MinutesToExpire));
-
-            return serverCertificateDTO;
         }
 
-        return null;
+        return serverCertificateDTO;
     }
 }

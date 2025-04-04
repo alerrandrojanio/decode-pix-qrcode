@@ -39,7 +39,7 @@ public class DecodeQrCodeService : IDecodeQrCodeService
 
         if (!string.IsNullOrEmpty(qrCodeDTO.MerchantAccountInformation!.URL))
         {
-            jws = await _decodeQrCodeIntegrationService.DecodeQrCode(qrCodeDTO) ?? throw new Exception();
+            jws = await _decodeQrCodeIntegrationService.DecodeQrCode(qrCodeDTO);
 
             JKUDTO? jku = await _decodeQrCodeIntegrationService.GetJKU(jws) ?? throw new Exception();
 

@@ -40,8 +40,6 @@ public class DecodeQrCodeIntegrationService : IDecodeQrCodeIntegrationService
 
         if (httpClientResponseDTO.StatusCode != HttpStatusCode.OK)
         {
-            // Salvar erro mongo
-
             if (httpClientResponseDTO.Error is not null)
                 throw new ServiceException(httpClientResponseDTO.Error.Title ?? httpClientResponseDTO.Error.Message, httpClientResponseDTO.StatusCode);
         }
@@ -65,8 +63,6 @@ public class DecodeQrCodeIntegrationService : IDecodeQrCodeIntegrationService
 
         if (httpClientResponseDTO.StatusCode != HttpStatusCode.OK)
         {
-            // Salvar erro mongo
-
             if (httpClientResponseDTO.Error is not null)
                 throw new ServiceException(httpClientResponseDTO.Error.Title ?? httpClientResponseDTO.Error.Message, httpClientResponseDTO.StatusCode);
         }

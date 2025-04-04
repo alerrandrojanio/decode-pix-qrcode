@@ -7,7 +7,7 @@ public class JWSWithdrawalDTO
     [JsonPropertyName("valor")]
     public string? Value { get; set; }
 
-    [JsonPropertyName("modalidade")]
+    [JsonPropertyName("modalidadeAlteracao")]
     public int? Modality { get; set; }
 
     [JsonPropertyName("prestadorDoServicoDeSaque")]
