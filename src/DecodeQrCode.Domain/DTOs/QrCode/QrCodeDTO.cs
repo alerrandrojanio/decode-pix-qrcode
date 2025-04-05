@@ -4,6 +4,8 @@ namespace DecodeQrCode.Domain.DTOs.QrCode;
 
 public class QrCodeDTO
 {
+    public string? QrCode { get; set; }
+
     public QrCodeType? Type { get; set; }
 
     public string? PayloadFormatIndicator { get; set; } 

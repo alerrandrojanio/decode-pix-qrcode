@@ -28,6 +28,7 @@ public class DecodeService : IDecodeService
         string id = string.Empty;
 
         QrCodeDTO qrCodeDTO = new();
+        qrCodeDTO.QrCode = qrCode;
 
         while (index < qrCode.Length)
         {

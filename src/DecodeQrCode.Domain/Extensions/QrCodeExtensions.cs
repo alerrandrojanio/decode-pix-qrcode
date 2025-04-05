@@ -27,4 +27,26 @@ public static class QrCodeExtensions
 
         throw new ServiceException("PixKey inválida!", HttpStatusCode.BadRequest);
     }
+
+    public static string CalculateCRC16(string qrCodeWithoutCRC)
+    {
+        const ushort polynomial = 0x1021;
+        
+        ushort crc = 0xFFFF;
+
+        foreach (char c in qrCodeWithoutCRC)
+        {
+            crc ^= (ushort)(c << 8);
+
+            for (int i = 0; i < 8; i++)
+            {
+                if ((crc & 0x8000) != 0)
+                    crc = (ushort)((crc << 1) ^ polynomial);
+                else
+                    crc <<= 1;
+            }
+        }
+
+        return crc.ToString("X4");
+    }
 }

@@ -27,7 +27,7 @@ public class JWSPayloadDTO
     public string? TxId { get; set; }
 
     [JsonPropertyName("solicitacaoPagador")]
-    public string? PayerRequest { get; set; }
+    public string? PayerSolicitation { get; set; }
 
     [JsonPropertyName("infoAdicionais")]
     public List<JWSAdditionalInformationDTO>? AdditionalInformation { get; set; }

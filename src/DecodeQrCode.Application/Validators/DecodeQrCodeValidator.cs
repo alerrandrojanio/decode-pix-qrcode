@@ -2,6 +2,7 @@
 using DecodeQrCode.Domain.DTOs.Certificate;
 using DecodeQrCode.Domain.DTOs.QrCode;
 using DecodeQrCode.Domain.Exceptions;
+using DecodeQrCode.Domain.Extensions;
 using DecodeQrCode.Domain.Interfaces;
 using DecodeQrCode.Infrastructure.Configuration;
 using Microsoft.Extensions.Options;
@@ -24,6 +25,8 @@ public class DecodeQrCodeValidator : IDecodeQrCodeValidator
 
     public async Task Validate(QrCodeDTO qrCodeDTO)
     {
+        ValidateCRC16(qrCodeDTO.QrCode!, qrCodeDTO.CRC16!);
+
         if (qrCodeDTO.MerchantAccountInformation!.URL is not null)
         {
             ValidateUrlMinumumBitSize(qrCodeDTO.MerchantAccountInformation.URL);
@@ -67,5 +70,15 @@ public class DecodeQrCodeValidator : IDecodeQrCodeValidator
 
         if (serverCertificateDTO.Protocol is not SslProtocols.Tls12 or SslProtocols.Tls13)
             throw new ServiceException(ApplicationMessage.Validate_ServerCertificate_Protocol, HttpStatusCode.BadRequest);
+    }
+
+    private void ValidateCRC16(string qrcode, string crc16)
+    {
+        string qrCodeWithoutCrc = qrcode[..^4];
+
+        string calculatedCrc = QrCodeExtensions.CalculateCRC16(qrCodeWithoutCrc).ToUpper();
+
+        if (!string.Equals(calculatedCrc, crc16.ToUpper(), StringComparison.Ordinal))
+            throw new ServiceException("QR Code inválido. Verifique se o código foi copiado corretamente", HttpStatusCode.BadRequest);
     }
 }
