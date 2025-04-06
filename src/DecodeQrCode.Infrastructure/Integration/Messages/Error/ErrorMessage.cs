@@ -1,11 +1,14 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace DecodeQrCode.Domain.DTOs.Client.Response;
+namespace DecodeQrCode.Infrastructure.Integration.Messages.Error;
 
-public class ErrorMessageDTO
+public class ErrorMessage
 {
     [JsonPropertyName("message")]
     public string? Message { get; set; }
+
+    [JsonPropertyName("mensagemErro")]
+    public string? MessageError { get; set; }
 
     [JsonPropertyName("title")]
     public string? Title { get; set; }

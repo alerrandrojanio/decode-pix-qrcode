@@ -16,6 +16,12 @@ public class ImmediateQrCodeResponseDTO
 
     public RecipientDTO? Recipient { get; set; }
 
+    public string? PayloadFormatIndicator { get; set; }
+
+    public string? TransactionCurrency { get; set; }
+
+    public string? GUI { get; set; }
+
     public string? TxId { get; set; }
 
     public string? Key { get; set; }
@@ -23,6 +29,8 @@ public class ImmediateQrCodeResponseDTO
     public string? KeyType { get; set; }
 
     public string? PayerSolicitation { get; set; }
+
+    public string? CRC16 { get; set; }
 
     public string? Status { get; set; }
 

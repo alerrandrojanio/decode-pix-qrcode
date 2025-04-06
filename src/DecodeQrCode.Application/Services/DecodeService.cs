@@ -1,6 +1,8 @@
 ﻿using DecodeQrCode.Domain.DTOs.QrCode;
 using DecodeQrCode.Domain.Enums;
+using DecodeQrCode.Domain.Exceptions;
 using DecodeQrCode.Domain.Interfaces;
+using System.Net;
 
 namespace DecodeQrCode.Application.Services;
 
@@ -8,7 +10,9 @@ public class DecodeService : IDecodeService
 {
     public QrCodeDTO DecodeQrCode(string qrCode)
     {
-        Dictionary<string, QrCodeField> QrCodeFields = new()
+        try
+        {
+            Dictionary<string, QrCodeField> QrCodeFields = new()
         {
             { "00", QrCodeField.PAYLOAD_FORMAT_INDICATOR },
             { "01", QrCodeField.POINT_OF_INITIATION_METHOD },
@@ -23,69 +27,74 @@ public class DecodeService : IDecodeService
             { "63", QrCodeField.CRC16 },
         };
 
-        int index = 0;
-        string value = string.Empty;
-        string id = string.Empty;
+            int index = 0;
+            string value = string.Empty;
+            string id = string.Empty;
 
-        QrCodeDTO qrCodeDTO = new();
-        qrCodeDTO.QrCode = qrCode;
+            QrCodeDTO qrCodeDTO = new();
+            qrCodeDTO.QrCode = qrCode;
 
-        while (index < qrCode.Length)
-        {
-            (id, value, index) = ExtractField(qrCode, index);
-
-            if (QrCodeFields.TryGetValue(id, out QrCodeField field))
+            while (index < qrCode.Length)
             {
-                switch (field)
+                (id, value, index) = ExtractField(qrCode, index);
+
+                if (QrCodeFields.TryGetValue(id, out QrCodeField field))
                 {
-                    case QrCodeField.PAYLOAD_FORMAT_INDICATOR:
-                        qrCodeDTO.PayloadFormatIndicator = value;
-                        break;
+                    switch (field)
+                    {
+                        case QrCodeField.PAYLOAD_FORMAT_INDICATOR:
+                            qrCodeDTO.PayloadFormatIndicator = value;
+                            break;
 
-                    case QrCodeField.POINT_OF_INITIATION_METHOD:
-                        qrCodeDTO.PointOfInitiationMethod = value;
-                        break;
+                        case QrCodeField.POINT_OF_INITIATION_METHOD:
+                            qrCodeDTO.PointOfInitiationMethod = value;
+                            break;
 
-                    case QrCodeField.MERCHANT_ACCOUNT_INFORMATION:
-                        qrCodeDTO.MerchantAccountInformation = DecodeMerchantAccountInformation(value);
-                        break;
+                        case QrCodeField.MERCHANT_ACCOUNT_INFORMATION:
+                            qrCodeDTO.MerchantAccountInformation = DecodeMerchantAccountInformation(value);
+                            break;
 
-                    case QrCodeField.MERCHANT_CATEGORY_CODE:
-                        qrCodeDTO.MerchantCategoryCode = value;
-                        break;
+                        case QrCodeField.MERCHANT_CATEGORY_CODE:
+                            qrCodeDTO.MerchantCategoryCode = value;
+                            break;
 
-                    case QrCodeField.TRANSACTION_CURRENCY:
-                        qrCodeDTO.TransactionCurrency = value;
-                        break;
+                        case QrCodeField.TRANSACTION_CURRENCY:
+                            qrCodeDTO.TransactionCurrency = value;
+                            break;
 
-                    case QrCodeField.TRANSACTION_AMOUNT:
-                        qrCodeDTO.TransactionAmount = value;
-                        break;
+                        case QrCodeField.TRANSACTION_AMOUNT:
+                            qrCodeDTO.TransactionAmount = value;
+                            break;
 
-                    case QrCodeField.COUNTRY_CODE:
-                        qrCodeDTO.CountryCode = value;
-                        break;
+                        case QrCodeField.COUNTRY_CODE:
+                            qrCodeDTO.CountryCode = value;
+                            break;
 
-                    case QrCodeField.MERCHANT_NAME:
-                        qrCodeDTO.MerchantName = value;
-                        break;
+                        case QrCodeField.MERCHANT_NAME:
+                            qrCodeDTO.MerchantName = value;
+                            break;
 
-                    case QrCodeField.MERCHANT_CITY:
-                        qrCodeDTO.MerchantCity = value;
-                        break;
+                        case QrCodeField.MERCHANT_CITY:
+                            qrCodeDTO.MerchantCity = value;
+                            break;
 
-                    case QrCodeField.ADDITIONAL_DATA_FIELD_TEMPLATE:
-                        qrCodeDTO.AdditionalDataField = DecodeAdditionalData(value);
-                        break;
+                        case QrCodeField.ADDITIONAL_DATA_FIELD_TEMPLATE:
+                            qrCodeDTO.AdditionalDataField = DecodeAdditionalData(value);
+                            break;
 
-                    case QrCodeField.CRC16:
-                        qrCodeDTO.CRC16 = value;
-                        break;
+                        case QrCodeField.CRC16:
+                            qrCodeDTO.CRC16 = value;
+                            break;
+                    }
                 }
             }
-        }
 
-        return qrCodeDTO;
+            return qrCodeDTO;
+        }
+        catch
+        {
+            throw new ServiceException("QR Code inválido. Verifique se o código foi copiado corretamente", HttpStatusCode.BadRequest);
+        }
     }
 
     private static MerchantAccountInformationDTO DecodeMerchantAccountInformation(string merchantInfo)

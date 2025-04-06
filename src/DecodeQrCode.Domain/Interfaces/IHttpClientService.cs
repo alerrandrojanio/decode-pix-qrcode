@@ -6,4 +6,6 @@ namespace DecodeQrCode.Domain.Interfaces;
 public interface IHttpClientService
 {
     Task<ClientResponseDTO> SendGetRequest(ClientGetRequestDTO clientGetRequestDTO);
+
+    void ProcessClientError(ClientResponseDTO clientResponseDTO);
 }

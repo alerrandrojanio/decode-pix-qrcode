@@ -29,22 +29,19 @@ public class DecodeQrCodeIntegrationService : IDecodeQrCodeIntegrationService
             RequestType = RequestType.APPLICATION_JSON,
         };
 
-        ClientResponseDTO httpClientResponseDTO = await _httpClientService.SendGetRequest(clientGetRequestDTO);
+        ClientResponseDTO clientResponseDTO = await _httpClientService.SendGetRequest(clientGetRequestDTO);
 
-        if (httpClientResponseDTO.StatusCode == HttpStatusCode.NotAcceptable)
+        if (clientResponseDTO.StatusCode == HttpStatusCode.NotAcceptable)
         {
             clientGetRequestDTO.RequestType = RequestType.APPLICATION_JOSE;
 
-            httpClientResponseDTO = await _httpClientService.SendGetRequest(clientGetRequestDTO);
+            clientResponseDTO = await _httpClientService.SendGetRequest(clientGetRequestDTO);
         }
 
-        if (httpClientResponseDTO.StatusCode != HttpStatusCode.OK)
-        {
-            if (httpClientResponseDTO.Error is not null)
-                throw new ServiceException(httpClientResponseDTO.Error.Title ?? httpClientResponseDTO.Error.Message, httpClientResponseDTO.StatusCode);
-        }
+        if (clientResponseDTO.StatusCode != HttpStatusCode.OK)
+            _httpClientService.ProcessClientError(clientResponseDTO);
 
-        string stringJWS = httpClientResponseDTO.Content!;
+        string stringJWS = clientResponseDTO.Content!;
 
         JWSDTO? jws = JWSExtensions.ParseJWS(stringJWS);
 
@@ -59,15 +56,12 @@ public class DecodeQrCodeIntegrationService : IDecodeQrCodeIntegrationService
             RequestType = RequestType.APPLICATION_JSON,
         };
 
-        ClientResponseDTO httpClientResponseDTO = await _httpClientService.SendGetRequest(clientGetRequestDTO);
+        ClientResponseDTO clientResponseDTO = await _httpClientService.SendGetRequest(clientGetRequestDTO);
 
-        if (httpClientResponseDTO.StatusCode != HttpStatusCode.OK)
-        {
-            if (httpClientResponseDTO.Error is not null)
-                throw new ServiceException(httpClientResponseDTO.Error.Title ?? httpClientResponseDTO.Error.Message, httpClientResponseDTO.StatusCode);
-        }
+        if (clientResponseDTO.StatusCode != HttpStatusCode.OK)
+            _httpClientService.ProcessClientError(clientResponseDTO);
 
-        JKUDTO? jku = JsonSerializer.Deserialize<JKUDTO>(httpClientResponseDTO.Content!);
+        JKUDTO? jku = JsonSerializer.Deserialize<JKUDTO>(clientResponseDTO.Content!);
 
         return jku;
     }

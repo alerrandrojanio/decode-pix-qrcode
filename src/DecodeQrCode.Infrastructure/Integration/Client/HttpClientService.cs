@@ -1,8 +1,10 @@
 ﻿using DecodeQrCode.Domain.DTOs.Client;
 using DecodeQrCode.Domain.DTOs.Client.Response;
 using DecodeQrCode.Domain.Enums;
+using DecodeQrCode.Domain.Exceptions;
 using DecodeQrCode.Domain.Extensions;
 using DecodeQrCode.Domain.Interfaces;
+using DecodeQrCode.Infrastructure.Integration.Messages.Error;
 using System.Net;
 using System.Text.Json;
 
@@ -42,18 +44,23 @@ public class HttpClientService : IHttpClientService
 
         string responseContent = await response.Content.ReadAsStringAsync();
 
-        ClientResponseDTO httpClientResponseDTO = new()
+        ClientResponseDTO clientResponseDTO = new()
         {
             Content = responseContent,
             StatusCode = response.StatusCode
         };
 
-        if (!response.IsSuccessStatusCode)
-            httpClientResponseDTO.Error = JsonSerializer.Deserialize<ErrorMessageDTO>(responseContent);
-
-        return httpClientResponseDTO;
+        return clientResponseDTO;
     }
 
+    public void ProcessClientError(ClientResponseDTO clientResponseDTO)
+    {
+        ErrorMessage? errorMessage = JsonSerializer.Deserialize<ErrorMessage>(clientResponseDTO.Content!);
+
+        if (errorMessage is not null)
+            throw new ServiceException(errorMessage.Title ?? errorMessage.Message ?? errorMessage.MessageError, clientResponseDTO.StatusCode);
+    }
+    
     private void ConfigureHttpClient(RequestType requestType)
     {
         _httpClient.DefaultRequestHeaders.Clear();
