@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 using System.Net.Security;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 
@@ -52,6 +53,8 @@ public class CertificateIntegrationService : ICertificateIntegrationService
             {
                 Issuer = certificate.Issuer,
                 Subject = certificate.Subject,
+                CommonName = certificate.GetNameInfo(X509NameType.SimpleName, false),
+                AlternativeNames = GetSubjectAlternativeNames(certificate),
                 ValidFrom = certificate.NotBefore,
                 ValidUntil = certificate.NotAfter,
                 Thumbprint = certificate.Thumbprint,
@@ -62,5 +65,31 @@ public class CertificateIntegrationService : ICertificateIntegrationService
         }
 
         return serverCertificateDTO;
+    }
+
+    private static List<string> GetSubjectAlternativeNames(X509Certificate2 cert)
+    {
+        string objectIdentifier = "2.5.29.17";
+        List<string> result = new();
+
+        foreach (X509Extension extension in cert.Extensions)
+        {
+            if (extension.Oid?.Value == objectIdentifier)
+            {
+                AsnEncodedData asnData = new(extension.Oid, extension.RawData);
+                
+                string[] parts = asnData.Format(false).Split(',');
+
+                foreach (string part in parts)
+                {
+                    string? trimmed = part.Trim();
+                    
+                    if (trimmed.StartsWith("DNS Name=", StringComparison.OrdinalIgnoreCase))
+                        result.Add(trimmed["DNS Name=".Length..].Trim());
+                }
+            }
+        }
+
+        return result;
     }
 }

@@ -8,6 +8,10 @@ public class ServerCertificateDTO
 
     public string Subject { get; set; } = string.Empty;
 
+    public string CommonName { get; set; } = string.Empty;
+
+    public List<string> AlternativeNames { get; set; } = new();
+
     public DateTime ValidFrom { get; set; }
 
     public DateTime ValidUntil { get; set; }
