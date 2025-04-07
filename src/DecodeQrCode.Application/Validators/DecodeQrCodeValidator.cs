@@ -79,6 +79,6 @@ public class DecodeQrCodeValidator : IDecodeQrCodeValidator
         string calculatedCrc = QrCodeExtensions.CalculateCRC16(qrCodeWithoutCrc).ToUpper();
 
         if (!string.Equals(calculatedCrc, crc16.ToUpper(), StringComparison.Ordinal))
-            throw new ServiceException("QR Code inválido. Verifique se o código foi copiado corretamente", HttpStatusCode.BadRequest);
+            throw new ServiceException(ApplicationMessage.QrCode_Invalid, HttpStatusCode.BadRequest);
     }
 }

@@ -85,6 +85,7 @@ public static class MappingConfiguration
         #region ImmediateQrCode
         TypeAdapterConfig<(QrCodeDTO qrCodeDTO, JWSDTO jwsDTO), ImmediateQrCodeResponseDTO>
             .NewConfig()
+            .Map(dest => dest.Revision, src => src.jwsDTO.Payload.Revision)
             .Map(dest => dest.CreationDate, src => src.jwsDTO.Payload.Calendar.CreationDate)
             .Map(dest => dest.PresentationDate, src => src.jwsDTO.Payload.Calendar.PresentationDate)
             .Map(dest => dest.Expiration, src => src.jwsDTO.Payload.Calendar.Expiration)
@@ -99,17 +100,19 @@ public static class MappingConfiguration
             .Map(dest => dest.PayloadFormatIndicator, src => src.qrCodeDTO.PayloadFormatIndicator)
             .Map(dest => dest.TransactionCurrency, src => src.qrCodeDTO.TransactionCurrency)
             .Map(dest => dest.CRC16, src => src.qrCodeDTO.CRC16)
-            .Map(dest => dest.GUI, src => src.qrCodeDTO.MerchantAccountInformation.GUI);
+            .Map(dest => dest.GUI, src => src.qrCodeDTO.MerchantAccountInformation.GUI)
+            .Map(dest => dest.AdditionalInformation, src => src.jwsDTO.Payload.AdditionalInformation);
         #endregion ImmediateQrCode
 
         #region DueDateQrCode
         TypeAdapterConfig<(QrCodeDTO qrCodeDTO, JWSDTO jwsDTO), DueDateQrCodeResponseDTO>
             .NewConfig()
+            .Map(dest => dest.Revision, src => src.jwsDTO.Payload.Revision)
             .Map(dest => dest.CreationDate, src => src.jwsDTO.Payload.Calendar.CreationDate)
             .Map(dest => dest.PresentationDate, src => src.jwsDTO.Payload.Calendar.PresentationDate)
             .Map(dest => dest.DueDate, src => src.jwsDTO.Payload.Calendar.DueDate)
             .Map(dest => dest.ValidityAfterExpiration, src => src.jwsDTO.Payload.Calendar.ValidityAfterExpiration)
-            .Map(dest => dest.Value, src => new ValueDTO())
+            .Map(dest => dest.Value, src => src.jwsDTO.Payload.Value)
             .Map(dest => dest.Debtor, src => src.jwsDTO.Payload.Debtor)
             .Map(dest => dest.Recipient, src => src.jwsDTO.Payload.Recipient)
             .Map(dest => dest.TxId, src => src.jwsDTO.Payload.TxId)
@@ -120,7 +123,8 @@ public static class MappingConfiguration
             .Map(dest => dest.PayloadFormatIndicator, src => src.qrCodeDTO.PayloadFormatIndicator)
             .Map(dest => dest.TransactionCurrency, src => src.qrCodeDTO.TransactionCurrency)
             .Map(dest => dest.CRC16, src => src.qrCodeDTO.CRC16)
-            .Map(dest => dest.GUI, src => src.qrCodeDTO.MerchantAccountInformation.GUI);
+            .Map(dest => dest.GUI, src => src.qrCodeDTO.MerchantAccountInformation.GUI)
+            .Map(dest => dest.AdditionalInformation, src => src.jwsDTO.Payload.AdditionalInformation);
         #endregion DueDateQrCode
         #endregion DynamicQrcode
         #endregion DecodeQrCode

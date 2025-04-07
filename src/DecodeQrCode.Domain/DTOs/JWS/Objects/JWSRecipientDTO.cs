@@ -10,7 +10,7 @@ public class JWSRecipientDTO
     [JsonPropertyName("cnpj")]
     public string? CNPJ { get; set; }
 
-    [JsonPropertyName("name")]
+    [JsonPropertyName("nome")]
     public string? Name { get; set; }
 
     [JsonPropertyName("nomeFantasia")]

@@ -1,4 +1,5 @@
-﻿using DecodeQrCode.Domain.DTOs.Decode;
+﻿using DecodeQrCode.Application.Resources;
+using DecodeQrCode.Domain.DTOs.Decode;
 using DecodeQrCode.Domain.DTOs.Decode.Response;
 using DecodeQrCode.Domain.DTOs.JKU;
 using DecodeQrCode.Domain.DTOs.JWS;
@@ -7,6 +8,7 @@ using DecodeQrCode.Domain.Enums;
 using DecodeQrCode.Domain.Exceptions;
 using DecodeQrCode.Domain.Interfaces;
 using Mapster;
+using System.Net;
 
 namespace DecodeQrCode.Application.Services;
 
@@ -46,7 +48,7 @@ public class DecodeQrCodeService : IDecodeQrCodeService
             _jkuValidator.Validate(jku);
 
             if (!_signatureValidator.Validate(jws, jku))
-                throw new ServiceException("Assinatura do QrCode é inválida", System.Net.HttpStatusCode.BadRequest);
+                throw new ServiceException(ApplicationMessage.Validate_Signature, HttpStatusCode.BadRequest);
 
             qrCodeDTO.Type = jws?.Payload?.Calendar?.DueDate is null ? QrCodeType.IMMEDIATE : QrCodeType.DUEDATE;
         }

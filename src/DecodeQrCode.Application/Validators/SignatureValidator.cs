@@ -1,9 +1,12 @@
-﻿using DecodeQrCode.Domain.DTOs.JKU;
+﻿using DecodeQrCode.Application.Resources;
+using DecodeQrCode.Domain.DTOs.JKU;
 using DecodeQrCode.Domain.DTOs.JKU.Objects;
 using DecodeQrCode.Domain.DTOs.JWS;
 using DecodeQrCode.Domain.Enums;
+using DecodeQrCode.Domain.Exceptions;
 using DecodeQrCode.Domain.Extensions;
 using DecodeQrCode.Domain.Interfaces;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -25,13 +28,13 @@ public class SignatureValidator : ISignatureValidator
         KeyDTO key = jku.Keys!.First();
 
         if (!Enum.TryParse<JKUKeyType>(key.KeyType, out var keyType))
-            throw new NotSupportedException("Algoritmo não suportado");
+            throw new ServiceException(ApplicationMessage.Validate_Signatura_Algorithm_NotSupported, HttpStatusCode.BadRequest);
 
         return keyType switch
         {
             JKUKeyType.RSA => ValidateWithRSA(jku, key, dataToVerify, signature, jws.Header!.Algorithm!),
             JKUKeyType.EC => ValidateWithECC(jku, key, dataToVerify, signature, jws.Header!.Algorithm!),
-            _ => throw new NotSupportedException("Algoritmo não suportado")
+            _ => throw new ServiceException(ApplicationMessage.Validate_Signatura_Algorithm_NotSupported, HttpStatusCode.BadRequest)
         };
     }
 
@@ -48,17 +51,20 @@ public class SignatureValidator : ISignatureValidator
         rsa.ImportParameters(rsaParameters);
 
         if (!Enum.TryParse<RSAHashAlgorithmType>(headerAlgorithm, out var algorithmType))
-            throw new NotSupportedException("Algoritmo não suportado");
+            throw new ServiceException(ApplicationMessage.Validate_Signatura_Algorithm_NotSupported, HttpStatusCode.BadRequest);
 
-        HashAlgorithmName hashAlgorithm = algorithmType switch
+        (HashAlgorithmName hashAlgorithm, RSASignaturePadding rsaSignaturePadding) = algorithmType switch
         {
-            RSAHashAlgorithmType.RS256 => HashAlgorithmName.SHA256,
-            RSAHashAlgorithmType.RS384 => HashAlgorithmName.SHA384,
-            RSAHashAlgorithmType.RS512 => HashAlgorithmName.SHA512,
-            _ => throw new NotSupportedException("Algoritmo RSA não suportado")
+            RSAHashAlgorithmType.RS256 => (HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1),
+            RSAHashAlgorithmType.RS384 => (HashAlgorithmName.SHA384, RSASignaturePadding.Pkcs1),
+            RSAHashAlgorithmType.RS512 => (HashAlgorithmName.SHA512, RSASignaturePadding.Pkcs1),
+            RSAHashAlgorithmType.PS256 => (HashAlgorithmName.SHA256, RSASignaturePadding.Pss),
+            RSAHashAlgorithmType.PS384 => (HashAlgorithmName.SHA384, RSASignaturePadding.Pss),
+            RSAHashAlgorithmType.PS512 => (HashAlgorithmName.SHA512, RSASignaturePadding.Pss),
+            _ => throw new ServiceException(ApplicationMessage.Validate_Signature_RSA_NotSupported, HttpStatusCode.BadRequest)
         };
 
-        return rsa.VerifyData(dataToVerify, signature, hashAlgorithm, RSASignaturePadding.Pkcs1);
+        return rsa.VerifyData(dataToVerify, signature, hashAlgorithm, rsaSignaturePadding);
     }
 
     private bool ValidateWithECC(JKUDTO jku, KeyDTO key, byte[] dataToVerify, byte[] signature, string headerAlgorithm)
@@ -66,14 +72,14 @@ public class SignatureValidator : ISignatureValidator
         using ECDsa ecdsa = ECDsa.Create();
 
         if (!Enum.TryParse<ECHashAlgorithmType>(headerAlgorithm, out var algorithmType))
-            throw new NotSupportedException("Algoritmo não suportado");
+            throw new ServiceException(ApplicationMessage.Validate_Signatura_Algorithm_NotSupported, HttpStatusCode.BadRequest);
 
-        ECCurve curve = algorithmType switch
+        (ECCurve curve, HashAlgorithmName hashAlgorithm) = algorithmType switch
         {
-            ECHashAlgorithmType.ES256 => ECCurve.NamedCurves.nistP256,
-            ECHashAlgorithmType.ES384 => ECCurve.NamedCurves.nistP384,
-            ECHashAlgorithmType.ES512 => ECCurve.NamedCurves.nistP521,
-            _ => throw new NotSupportedException("Algoritmo EC não suportado")
+            ECHashAlgorithmType.ES256 => (ECCurve.NamedCurves.nistP256, HashAlgorithmName.SHA256),
+            ECHashAlgorithmType.ES384 => (ECCurve.NamedCurves.nistP384, HashAlgorithmName.SHA384),
+            ECHashAlgorithmType.ES512 => (ECCurve.NamedCurves.nistP521, HashAlgorithmName.SHA512),
+            _ => throw new ServiceException(ApplicationMessage.Validate_Signature_EC_NotSupported, HttpStatusCode.BadRequest)
         };
 
         ecdsa.ImportParameters(new ECParameters
@@ -86,6 +92,6 @@ public class SignatureValidator : ISignatureValidator
             }
         });
 
-        return ecdsa.VerifyData(dataToVerify, signature, HashAlgorithmName.SHA256);
+        return ecdsa.VerifyData(dataToVerify, signature, hashAlgorithm);
     }
 }

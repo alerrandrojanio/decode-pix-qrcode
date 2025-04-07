@@ -1,4 +1,5 @@
-﻿using DecodeQrCode.Domain.DTOs.QrCode;
+﻿using DecodeQrCode.Application.Resources;
+using DecodeQrCode.Domain.DTOs.QrCode;
 using DecodeQrCode.Domain.Enums;
 using DecodeQrCode.Domain.Exceptions;
 using DecodeQrCode.Domain.Interfaces;
@@ -93,7 +94,7 @@ public class DecodeService : IDecodeService
         }
         catch
         {
-            throw new ServiceException("QR Code inválido. Verifique se o código foi copiado corretamente", HttpStatusCode.BadRequest);
+            throw new ServiceException(ApplicationMessage.QrCode_Invalid, HttpStatusCode.BadRequest);
         }
     }
 

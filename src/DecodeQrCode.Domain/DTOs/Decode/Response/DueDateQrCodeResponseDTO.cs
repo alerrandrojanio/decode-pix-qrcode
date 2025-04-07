@@ -4,6 +4,11 @@ namespace DecodeQrCode.Domain.DTOs.Decode.Response;
 
 public class DueDateQrCodeResponseDTO
 {
+    public int? Revision { get; set; }
+
+    public string? PayloadFormatIndicator { get; set; }
+
+    public string? TransactionCurrency { get; set; }
 
     public string? CreationDate { get; set; }
 
@@ -18,10 +23,6 @@ public class DueDateQrCodeResponseDTO
     public DebtorDTO? Debtor { get; set; }
 
     public RecipientDTO? Recipient { get; set; }
-
-    public string? PayloadFormatIndicator { get; set; }
-
-    public string? TransactionCurrency { get; set; }
 
     public string? GUI { get; set; }
 

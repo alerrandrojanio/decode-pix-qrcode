@@ -12,6 +12,6 @@ public class JKUValidator : IJKUValidator
 
     public void Validate(JKUDTO jku)
     {
-        throw new NotImplementedException();
+        return;
     }
 }

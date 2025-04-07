@@ -61,6 +61,15 @@ namespace DecodeQrCode.Application.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a QR Code inválido. Verifique se o código foi copiado corretamente.
+        /// </summary>
+        internal static string QrCode_Invalid {
+            get {
+                return ResourceManager.GetString("QrCode.Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Certificado expirado.
         /// </summary>
         internal static string Validate_ServerCertificate_Expired {
@@ -84,6 +93,42 @@ namespace DecodeQrCode.Application.Resources {
         internal static string Validate_ServerCertificate_Protocol {
             get {
                 return ResourceManager.GetString("Validate.ServerCertificate.Protocol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Algoritmo não suportado.
+        /// </summary>
+        internal static string Validate_Signatura_Algorithm_NotSupported {
+            get {
+                return ResourceManager.GetString("Validate.Signatura.Algorithm.NotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Assinatura do QrCode é inválida.
+        /// </summary>
+        internal static string Validate_Signature {
+            get {
+                return ResourceManager.GetString("Validate.Signature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Algoritmo EC não suportado.
+        /// </summary>
+        internal static string Validate_Signature_EC_NotSupported {
+            get {
+                return ResourceManager.GetString("Validate.Signature.EC.NotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Algoritmo RSA não suportado.
+        /// </summary>
+        internal static string Validate_Signature_RSA_NotSupported {
+            get {
+                return ResourceManager.GetString("Validate.Signature.RSA.NotSupported", resourceCulture);
             }
         }
         

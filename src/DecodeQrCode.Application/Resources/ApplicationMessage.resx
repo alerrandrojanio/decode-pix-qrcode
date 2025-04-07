@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="QrCode.Invalid" xml:space="preserve">
+    <value>QR Code inválido. Verifique se o código foi copiado corretamente</value>
+  </data>
   <data name="Validate.ServerCertificate.Expired" xml:space="preserve">
     <value>Certificado expirado</value>
   </data>
@@ -125,6 +128,18 @@
   </data>
   <data name="Validate.ServerCertificate.Protocol" xml:space="preserve">
     <value>O servidor deve usar TLS 1.2 ou superior</value>
+  </data>
+  <data name="Validate.Signatura.Algorithm.NotSupported" xml:space="preserve">
+    <value>Algoritmo não suportado</value>
+  </data>
+  <data name="Validate.Signature" xml:space="preserve">
+    <value>Assinatura do QrCode é inválida</value>
+  </data>
+  <data name="Validate.Signature.EC.NotSupported" xml:space="preserve">
+    <value>Algoritmo EC não suportado</value>
+  </data>
+  <data name="Validate.Signature.RSA.NotSupported" xml:space="preserve">
+    <value>Algoritmo RSA não suportado</value>
   </data>
   <data name="Validate.URL.Homologation" xml:space="preserve">
     <value>URL de homologação não permitida</value>
