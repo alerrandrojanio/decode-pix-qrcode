@@ -35,7 +35,7 @@ public class DecodeQrCodeValidator : IDecodeQrCodeValidator
 
             ServerCertificateDTO? serverCertificateDTO = await _certificateIntegrationService.GetServerCertificate(qrCodeDTO.MerchantAccountInformation!.URL);
 
-            ValidateCertificate(serverCertificateDTO);
+            ValidateCertificate(serverCertificateDTO, qrCodeDTO.MerchantAccountInformation!.URL);
         }
     }
 
@@ -60,7 +60,7 @@ public class DecodeQrCodeValidator : IDecodeQrCodeValidator
             throw new ServiceException(ApplicationMessage.Validate_URL_Homologation, HttpStatusCode.BadRequest);
     }
 
-    private void ValidateCertificate(ServerCertificateDTO? serverCertificateDTO)
+    private void ValidateCertificate(ServerCertificateDTO? serverCertificateDTO, string url)
     {
         if (serverCertificateDTO is null)
             throw new ServiceException(ApplicationMessage.Validate_ServerCertificate_NotFound, HttpStatusCode.BadRequest);
@@ -70,6 +70,15 @@ public class DecodeQrCodeValidator : IDecodeQrCodeValidator
 
         if (serverCertificateDTO.Protocol is not SslProtocols.Tls12 or SslProtocols.Tls13)
             throw new ServiceException(ApplicationMessage.Validate_ServerCertificate_Protocol, HttpStatusCode.BadRequest);
+
+        if (serverCertificateDTO.CommonName is null && !serverCertificateDTO.AlternativeNames.Any())
+            throw new ServiceException("Certificado não possui CommonName ou AlternativeNames", HttpStatusCode.BadRequest);
+        
+        string host = new Uri(url.AddSecurityPrefix()).Host;
+
+        if (!string.Equals(serverCertificateDTO.CommonName, host, StringComparison.OrdinalIgnoreCase) && 
+            !serverCertificateDTO.AlternativeNames.Any(name => string.Equals(name, host, StringComparison.OrdinalIgnoreCase)))
+            throw new ServiceException("Erro ao validar CommonName ou AlternativeName do certificado", HttpStatusCode.BadRequest);
     }
 
     private void ValidateCRC16(string qrcode, string crc16)

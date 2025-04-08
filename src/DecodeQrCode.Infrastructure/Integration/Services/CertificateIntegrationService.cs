@@ -1,9 +1,11 @@
 ﻿using DecodeQrCode.Domain.DTOs.Certificate;
+using DecodeQrCode.Domain.Exceptions;
 using DecodeQrCode.Domain.Extensions;
 using DecodeQrCode.Domain.Interfaces;
 using DecodeQrCode.Infrastructure.Configuration;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
+using System.Net;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Cryptography;
@@ -40,9 +42,7 @@ public class CertificateIntegrationService : ICertificateIntegrationService
         
         await client.ConnectAsync(uri.Host, 443);
 
-        using SslStream sslStream = new(client.GetStream(), false,
-            (sender, certificate, chain, sslPolicyErrors) => true);
-
+        using SslStream sslStream = new(client.GetStream(), false, ValidateCertificateChain);
         await sslStream.AuthenticateAsClientAsync(uri.Host);
 
         ServerCertificateDTO? serverCertificateDTO = null;
@@ -65,6 +65,26 @@ public class CertificateIntegrationService : ICertificateIntegrationService
         }
 
         return serverCertificateDTO;
+    }
+
+    private static bool ValidateCertificateChain(object sender, X509Certificate? certificate, X509Chain? chain, SslPolicyErrors sslPolicyErrors)
+    {
+        if (sslPolicyErrors == SslPolicyErrors.None)
+            return true;
+
+        if (chain is null || certificate is null)
+            return false;
+
+        chain.ChainPolicy.RevocationMode = X509RevocationMode.Online;
+        chain.ChainPolicy.RevocationFlag = X509RevocationFlag.EntireChain;
+        chain.ChainPolicy.VerificationFlags = X509VerificationFlags.NoFlag;
+
+        bool isValid = chain.Build(new X509Certificate2(certificate));
+
+        if (!isValid)
+            throw new ServiceException("Certificado não é válido", HttpStatusCode.BadRequest);
+
+        return isValid;
     }
 
     private static List<string> GetSubjectAlternativeNames(X509Certificate2 cert)

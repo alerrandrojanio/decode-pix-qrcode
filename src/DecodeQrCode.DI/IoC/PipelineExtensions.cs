@@ -36,6 +36,7 @@ public static class PipelineExtensions
     {
         services.Configure<QrCodeSettings>(configuration.GetSection(nameof(QrCodeSettings)));
         services.Configure<CacheSettings>(configuration.GetSection(nameof(CacheSettings)));
+        services.Configure<JKUSettings>(configuration.GetSection(nameof(JKUSettings)));
     }
 
     public static void AddRedisConnection(this IServiceCollection services, IConfiguration configuration)
