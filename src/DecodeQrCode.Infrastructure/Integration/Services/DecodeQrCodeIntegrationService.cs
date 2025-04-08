@@ -4,7 +4,6 @@ using DecodeQrCode.Domain.DTOs.JKU;
 using DecodeQrCode.Domain.DTOs.JWS;
 using DecodeQrCode.Domain.DTOs.QrCode;
 using DecodeQrCode.Domain.Enums;
-using DecodeQrCode.Domain.Exceptions;
 using DecodeQrCode.Domain.Extensions;
 using DecodeQrCode.Domain.Interfaces;
 using System.Net;
@@ -31,14 +30,14 @@ public class DecodeQrCodeIntegrationService : IDecodeQrCodeIntegrationService
 
         ClientResponseDTO clientResponseDTO = await _httpClientService.SendGetRequest(clientGetRequestDTO);
 
-        if (clientResponseDTO.StatusCode == HttpStatusCode.NotAcceptable)
+        if (clientResponseDTO.StatusCode != HttpStatusCode.OK && clientResponseDTO.StatusCode != HttpStatusCode.Gone)
         {
             clientGetRequestDTO.RequestType = RequestType.APPLICATION_JOSE;
 
             clientResponseDTO = await _httpClientService.SendGetRequest(clientGetRequestDTO);
         }
 
-        if (clientResponseDTO.StatusCode != HttpStatusCode.OK)
+        if (clientResponseDTO.StatusCode != HttpStatusCode.OK && clientResponseDTO.StatusCode != HttpStatusCode.Gone)
             _httpClientService.ProcessClientError(clientResponseDTO);
 
         string stringJWS = clientResponseDTO.Content!;

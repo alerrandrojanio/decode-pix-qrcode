@@ -72,13 +72,13 @@ public class DecodeQrCodeValidator : IDecodeQrCodeValidator
             throw new ServiceException(ApplicationMessage.Validate_ServerCertificate_Protocol, HttpStatusCode.BadRequest);
 
         if (serverCertificateDTO.CommonName is null && !serverCertificateDTO.AlternativeNames.Any())
-            throw new ServiceException("Certificado não possui CommonName ou AlternativeNames", HttpStatusCode.BadRequest);
+            throw new ServiceException(ApplicationMessage.Validate_Certificate_Names_NotFound, HttpStatusCode.BadRequest);
         
         string host = new Uri(url.AddSecurityPrefix()).Host;
 
         if (!string.Equals(serverCertificateDTO.CommonName, host, StringComparison.OrdinalIgnoreCase) && 
             !serverCertificateDTO.AlternativeNames.Any(name => string.Equals(name, host, StringComparison.OrdinalIgnoreCase)))
-            throw new ServiceException("Erro ao validar CommonName ou AlternativeName do certificado", HttpStatusCode.BadRequest);
+            throw new ServiceException(ApplicationMessage.Validate_Certificate_Names_Invalid, HttpStatusCode.BadRequest);
     }
 
     private void ValidateCRC16(string qrcode, string crc16)

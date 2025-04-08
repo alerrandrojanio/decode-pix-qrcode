@@ -28,7 +28,7 @@ public class KeyDTO
     [JsonPropertyName("x5t")]
     public string? X509CertificateThumbprint { get; set; }
 
-    [JsonPropertyName("x5t#256")]
+    [JsonPropertyName("x5t#S256")]
     public string? X509CertificateThumbprintSha256 { get; set; }
 
     [JsonPropertyName("key_ops")]

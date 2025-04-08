@@ -28,13 +28,13 @@ public class SignatureValidator : ISignatureValidator
         KeyDTO key = jku.Keys!.First();
 
         if (!Enum.TryParse<JKUKeyType>(key.KeyType, out var keyType))
-            throw new ServiceException(ApplicationMessage.Validate_Signatura_Algorithm_NotSupported, HttpStatusCode.BadRequest);
+            throw new ServiceException(ApplicationMessage.Validate_Signature_Algorithm_NotSupported, HttpStatusCode.BadRequest);
 
         return keyType switch
         {
             JKUKeyType.RSA => ValidateWithRSA(jku, key, dataToVerify, signature, jws.Header!.Algorithm!),
             JKUKeyType.EC => ValidateWithECC(jku, key, dataToVerify, signature, jws.Header!.Algorithm!),
-            _ => throw new ServiceException(ApplicationMessage.Validate_Signatura_Algorithm_NotSupported, HttpStatusCode.BadRequest)
+            _ => throw new ServiceException(ApplicationMessage.Validate_Signature_Algorithm_NotSupported, HttpStatusCode.BadRequest)
         };
     }
 
@@ -51,7 +51,7 @@ public class SignatureValidator : ISignatureValidator
         rsa.ImportParameters(rsaParameters);
 
         if (!Enum.TryParse<RSAHashAlgorithmType>(headerAlgorithm, out var algorithmType))
-            throw new ServiceException(ApplicationMessage.Validate_Signatura_Algorithm_NotSupported, HttpStatusCode.BadRequest);
+            throw new ServiceException(ApplicationMessage.Validate_Signature_Algorithm_NotSupported, HttpStatusCode.BadRequest);
 
         (HashAlgorithmName hashAlgorithm, RSASignaturePadding rsaSignaturePadding) = algorithmType switch
         {
@@ -72,7 +72,7 @@ public class SignatureValidator : ISignatureValidator
         using ECDsa ecdsa = ECDsa.Create();
 
         if (!Enum.TryParse<ECHashAlgorithmType>(headerAlgorithm, out var algorithmType))
-            throw new ServiceException(ApplicationMessage.Validate_Signatura_Algorithm_NotSupported, HttpStatusCode.BadRequest);
+            throw new ServiceException(ApplicationMessage.Validate_Signature_Algorithm_NotSupported, HttpStatusCode.BadRequest);
 
         (ECCurve curve, HashAlgorithmName hashAlgorithm) = algorithmType switch
         {

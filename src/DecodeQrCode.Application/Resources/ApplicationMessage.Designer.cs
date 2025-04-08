@@ -70,6 +70,33 @@ namespace DecodeQrCode.Application.Resources {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Erro ao validar CommonName ou AlternativeName do certificado.
+        /// </summary>
+        internal static string Validate_Certificate_Names_Invalid {
+            get {
+                return ResourceManager.GetString("Validate.Certificate.Names.Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Certificado não possui CommonName ou AlternativeNames.
+        /// </summary>
+        internal static string Validate_Certificate_Names_NotFound {
+            get {
+                return ResourceManager.GetString("Validate.Certificate.Names.NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Erro ao validar as propriedades do JKU.
+        /// </summary>
+        internal static string Validate_JKU_Invalid {
+            get {
+                return ResourceManager.GetString("Validate.JKU.Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Certificado expirado.
         /// </summary>
         internal static string Validate_ServerCertificate_Expired {
@@ -97,20 +124,20 @@ namespace DecodeQrCode.Application.Resources {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Algoritmo não suportado.
-        /// </summary>
-        internal static string Validate_Signatura_Algorithm_NotSupported {
-            get {
-                return ResourceManager.GetString("Validate.Signatura.Algorithm.NotSupported", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Assinatura do QrCode é inválida.
         /// </summary>
         internal static string Validate_Signature {
             get {
                 return ResourceManager.GetString("Validate.Signature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Algoritmo não suportado.
+        /// </summary>
+        internal static string Validate_Signature_Algorithm_NotSupported {
+            get {
+                return ResourceManager.GetString("Validate.Signature.Algorithm.NotSupported", resourceCulture);
             }
         }
         

@@ -43,7 +43,7 @@ public class DecodeQrCodeService : IDecodeQrCodeService
         {
             jws = await _decodeQrCodeIntegrationService.DecodeQrCode(qrCodeDTO);
 
-            JKUDTO? jku = await _decodeQrCodeIntegrationService.GetJKU(jws) ?? throw new Exception();
+            JKUDTO? jku = await _decodeQrCodeIntegrationService.GetJKU(jws);
 
             _jkuValidator.Validate(jku);
 

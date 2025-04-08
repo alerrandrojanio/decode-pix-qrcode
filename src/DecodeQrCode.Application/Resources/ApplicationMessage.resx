@@ -129,7 +129,7 @@
   <data name="Validate.ServerCertificate.Protocol" xml:space="preserve">
     <value>O servidor deve usar TLS 1.2 ou superior</value>
   </data>
-  <data name="Validate.Signatura.Algorithm.NotSupported" xml:space="preserve">
+  <data name="Validate.Signature.Algorithm.NotSupported" xml:space="preserve">
     <value>Algoritmo não suportado</value>
   </data>
   <data name="Validate.Signature" xml:space="preserve">
@@ -146,5 +146,14 @@
   </data>
   <data name="Validate.URL.MinumumBitSize" xml:space="preserve">
     <value>A URL deve ter tamanho mínimo de 120 bits aleatórios</value>
+  </data>
+  <data name="Validate.JKU.Invalid" xml:space="preserve">
+    <value>Erro ao validar as propriedades do JKU</value>
+  </data>
+  <data name="Validate.Certificate.Names.NotFound" xml:space="preserve">
+    <value>Certificado não possui CommonName ou AlternativeNames</value>
+  </data>
+  <data name="Validate.Certificate.Names.Invalid" xml:space="preserve">
+    <value>Erro ao validar CommonName ou AlternativeName do certificado</value>
   </data>
 </root>

@@ -1,6 +1,8 @@
 ﻿using DecodeQrCode.Domain.Enums;
 using DecodeQrCode.Domain.Exceptions;
 using System.Net;
+using System.Reflection;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace DecodeQrCode.Domain.Extensions;
@@ -48,5 +50,16 @@ public static class QrCodeExtensions
         }
 
         return crc.ToString("X4");
+    }
+
+    public static PropertyInfo? GetPropertyByJsonPropertyName(this Type type, string jsonPropertyName)
+    {
+        return type.GetProperties()
+            .FirstOrDefault(p =>
+            {
+                JsonPropertyNameAttribute? attr = p.GetCustomAttribute<JsonPropertyNameAttribute>();
+                
+                return (attr != null && attr.Name == jsonPropertyName) || (attr == null && p.Name == jsonPropertyName);
+            });
     }
 }
