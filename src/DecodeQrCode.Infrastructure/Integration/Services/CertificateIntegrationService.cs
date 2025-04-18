@@ -3,6 +3,7 @@ using DecodeQrCode.Domain.Exceptions;
 using DecodeQrCode.Domain.Extensions;
 using DecodeQrCode.Domain.Interfaces;
 using DecodeQrCode.Infrastructure.Configuration;
+using DecodeQrCode.Infrastructure.Resources;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 using System.Net;
@@ -27,44 +28,51 @@ public class CertificateIntegrationService : ICertificateIntegrationService
 
     public async Task<ServerCertificateDTO?> GetServerCertificate(string url)
     {
-        Uri uri = new(url.AddSecurityPrefix());
-
-        string cacheKey = CacheExtensions.GenerateKey<ServerCertificateDTO>(nameof(uri), uri.Host);
-
-        IDatabase cacheDatabase = _redisConnection.GetDatabase();
-
-        string? cachedData = cacheDatabase.StringGet(cacheKey);
-
-        if (cachedData is not null)
-            return JsonSerializer.Deserialize<ServerCertificateDTO>(cachedData);
-
-        using TcpClient client = new();
-        
-        await client.ConnectAsync(uri.Host, 443);
-
-        using SslStream sslStream = new(client.GetStream(), false, ValidateCertificateChain);
-        await sslStream.AuthenticateAsClientAsync(uri.Host);
-
-        ServerCertificateDTO? serverCertificateDTO = null;
-
-        if (sslStream.RemoteCertificate is X509Certificate2 certificate)
+        try
         {
-            serverCertificateDTO = new() 
+            Uri uri = new(url.AddSecurityPrefix());
+
+            string cacheKey = CacheExtensions.GenerateKey<ServerCertificateDTO>(nameof(uri), uri.Host);
+
+            IDatabase cacheDatabase = _redisConnection.GetDatabase();
+
+            string? cachedData = cacheDatabase.StringGet(cacheKey);
+
+            if (cachedData is not null)
+                return JsonSerializer.Deserialize<ServerCertificateDTO>(cachedData);
+
+            using TcpClient client = new();
+
+            await client.ConnectAsync(uri.Host, 443);
+
+            using SslStream sslStream = new(client.GetStream(), false, ValidateCertificateChain);
+            await sslStream.AuthenticateAsClientAsync(uri.Host);
+
+            ServerCertificateDTO? serverCertificateDTO = null;
+
+            if (sslStream.RemoteCertificate is X509Certificate2 certificate)
             {
-                Issuer = certificate.Issuer,
-                Subject = certificate.Subject,
-                CommonName = certificate.GetNameInfo(X509NameType.SimpleName, false),
-                AlternativeNames = GetSubjectAlternativeNames(certificate),
-                ValidFrom = certificate.NotBefore,
-                ValidUntil = certificate.NotAfter,
-                Thumbprint = certificate.Thumbprint,
-                Protocol = sslStream.SslProtocol
-            };
+                serverCertificateDTO = new()
+                {
+                    Issuer = certificate.Issuer,
+                    Subject = certificate.Subject,
+                    CommonName = certificate.GetNameInfo(X509NameType.SimpleName, false),
+                    AlternativeNames = GetSubjectAlternativeNames(certificate),
+                    ValidFrom = certificate.NotBefore,
+                    ValidUntil = certificate.NotAfter,
+                    Thumbprint = certificate.Thumbprint,
+                    Protocol = sslStream.SslProtocol
+                };
 
-            cacheDatabase.StringSet(cacheKey, JsonSerializer.Serialize(serverCertificateDTO), TimeSpan.FromMinutes(_cacheSettings.MinutesToExpire));
+                cacheDatabase.StringSet(cacheKey, JsonSerializer.Serialize(serverCertificateDTO), TimeSpan.FromMinutes(_cacheSettings.MinutesToExpire));
+            }
+
+            return serverCertificateDTO;
         }
-
-        return serverCertificateDTO;
+        catch (Exception ex)
+        {
+            throw new DecodeException(InfrastructureMessage.Certificate_Get_Fail, ex, HttpStatusCode.BadRequest);
+        }
     }
 
     private static bool ValidateCertificateChain(object sender, X509Certificate? certificate, X509Chain? chain, SslPolicyErrors sslPolicyErrors)
@@ -82,7 +90,7 @@ public class CertificateIntegrationService : ICertificateIntegrationService
         bool isValid = chain.Build(new X509Certificate2(certificate));
 
         if (!isValid)
-            throw new ServiceException("Certificado não é válido", HttpStatusCode.BadRequest);
+            throw new ServiceException(InfrastructureMessage.Certificate_Invalid, HttpStatusCode.BadRequest);
 
         return isValid;
     }

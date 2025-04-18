@@ -4,6 +4,7 @@ using DecodeQrCode.Domain.Interfaces;
 using DecodeQrCode.Infrastructure.Configuration;
 using DecodeQrCode.Infrastructure.Integration.Client;
 using DecodeQrCode.Infrastructure.Integration.Services;
+using DecodeQrCode.Infrastructure.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -27,6 +28,8 @@ public static class PipelineExtensions
         services.AddScoped<IDecodeQrCodeIntegrationService, DecodeQrCodeIntegrationService>();
         services.AddScoped<ICertificateIntegrationService, CertificateIntegrationService>();
 
+        services.AddScoped<IDbLogger, MongoDbLogger>();
+
         services.AddScoped<IHttpClientService, HttpClientService>();
 
         services.AddHttpClient<HttpClientService>();
@@ -37,6 +40,7 @@ public static class PipelineExtensions
         services.Configure<QrCodeSettings>(configuration.GetSection(nameof(QrCodeSettings)));
         services.Configure<CacheSettings>(configuration.GetSection(nameof(CacheSettings)));
         services.Configure<JKUSettings>(configuration.GetSection(nameof(JKUSettings)));
+        services.Configure<MongoDbSettings>(configuration.GetSection(nameof(MongoDbSettings)));
     }
 
     public static void AddRedisConnection(this IServiceCollection services, IConfiguration configuration)

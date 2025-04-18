@@ -92,9 +92,9 @@ public class DecodeService : IDecodeService
 
             return qrCodeDTO;
         }
-        catch
+        catch (Exception ex)
         {
-            throw new ServiceException(ApplicationMessage.QrCode_Invalid, HttpStatusCode.BadRequest);
+            throw new DecodeException(ApplicationMessage.QrCode_Invalid, ex, HttpStatusCode.BadRequest);
         }
     }
 

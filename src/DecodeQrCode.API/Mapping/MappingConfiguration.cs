@@ -4,6 +4,7 @@ using DecodeQrCode.Domain.DTOs.Decode.Response;
 using DecodeQrCode.Domain.DTOs.Decode.Response.Objects;
 using DecodeQrCode.Domain.DTOs.JWS;
 using DecodeQrCode.Domain.DTOs.JWS.Objects;
+using DecodeQrCode.Domain.DTOs.Logging;
 using DecodeQrCode.Domain.DTOs.QrCode;
 using DecodeQrCode.Domain.Extensions;
 using Mapster;
@@ -128,5 +129,13 @@ public static class MappingConfiguration
         #endregion DueDateQrCode
         #endregion DynamicQrcode
         #endregion DecodeQrCode
+
+        #region ErrorLog
+        TypeAdapterConfig<Exception, ErrorLogDTO>.NewConfig()
+            .Map(dest => dest.Message, src => src.Message)
+            .Map(dest => dest.StackTrace, src => src.StackTrace)
+            .Map(dest => dest.Source, src => src.Source)
+            .Map(dest => dest.InnerException, src => src.InnerException);
+        #endregion ErrorLog
     }
 }
