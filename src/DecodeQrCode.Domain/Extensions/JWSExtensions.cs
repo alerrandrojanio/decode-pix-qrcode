@@ -25,6 +25,4 @@ public static class JWSExtensions
 
         return jws;
     }
-
-    
 }

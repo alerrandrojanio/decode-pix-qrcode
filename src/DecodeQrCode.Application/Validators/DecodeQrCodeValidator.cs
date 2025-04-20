@@ -56,7 +56,7 @@ public class DecodeQrCodeValidator : IDecodeQrCodeValidator
 
         Uri uri = new(url);
 
-        if (uri.Host.EndsWith(_qrCodeSettings.HomologationPrefix))
+        if (uri.Host.EndsWith(_qrCodeSettings.HomologationSufix))
             throw new ServiceException(ApplicationMessage.Validate_URL_Homologation, HttpStatusCode.BadRequest);
     }
 
@@ -75,6 +75,9 @@ public class DecodeQrCodeValidator : IDecodeQrCodeValidator
             throw new ServiceException(ApplicationMessage.Validate_Certificate_Names_NotFound, HttpStatusCode.BadRequest);
         
         string host = new Uri(url.AddSecurityPrefix()).Host;
+
+        if (host.Contains(_qrCodeSettings.HostHomologationPrefix))
+            host = host.Remove(0, _qrCodeSettings.HostHomologationPrefix.Length);
 
         if (!string.Equals(serverCertificateDTO.CommonName, host, StringComparison.OrdinalIgnoreCase) && 
             !serverCertificateDTO.AlternativeNames.Any(name => string.Equals(name, host, StringComparison.OrdinalIgnoreCase)))

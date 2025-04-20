@@ -1,6 +1,4 @@
-﻿using DecodeQrCode.Domain.Enums;
-
-namespace DecodeQrCode.Domain.DTOs.Decode.Response;
+﻿namespace DecodeQrCode.Domain.DTOs.Decode.Response;
 
 public class DecodeQrCodeResponseDTO
 {
